@@ -1,6 +1,11 @@
 import React, {Fragment} from "react";
 
-const Guitarra = ({guitarra}) => {
+const Guitarra = ({guitarra, setCarrito, carrito, addToCarrito}) => {
+
+    function handleClick(guitarra) {
+        setCarrito([...carrito, guitarra]);
+    }
+
     return (
         <Fragment>
             <div className="col-md-6 col-lg-4 my-4 row align-items-center">
@@ -14,8 +19,10 @@ const Guitarra = ({guitarra}) => {
                     <button
                         type="button"
                         className="btn btn-dark w-100"
-                    >Agregar al Carrito
-                    </button>
+                        onClick={() => {
+                            addToCarrito(guitarra)
+                        }}
+                    >Agregar al Carrito</button>
                 </div>
             </div>
         </Fragment>
