@@ -1,13 +1,26 @@
 import React, {Fragment} from "react";
 
-const Header = ({carrito}) => {
+const Header = ({carrito, setCarrito}) => {
 
     function totalCarrito(){
-        const costoTotalCarrito = carrito.reduce((total, carrito) => {
-            return total + carrito.price;
+        const costoTotalCarrito = carrito.reduce((total, guitarra) => {
+            return total + (guitarra.price * guitarra.cantidad);
         }, 0);
         return costoTotalCarrito;
     }
+
+    function eliminarElementoCarrito(id) {
+        const carritoActual = [...carrito];
+        const carritoNuevo = carritoActual.filter((guitarra) => {
+            return guitarra.id !== id;
+        });
+        setCarrito(carritoNuevo);
+    }
+
+    function vaciarCarrito() {
+        setCarrito([]);
+    }
+
     return (
         <Fragment>
             <header className="py-5 header">
@@ -66,6 +79,9 @@ const Header = ({carrito}) => {
                                                             <button
                                                                 className="btn btn-danger"
                                                                 type="button"
+                                                                onClick={() => {
+                                                                    eliminarElementoCarrito(guitarra.id);
+                                                                }}
                                                             >
                                                                 X
                                                             </button>
@@ -75,7 +91,7 @@ const Header = ({carrito}) => {
                                                 </tbody>
                                             </table>
                                             <p className="text-end">Total pagar: <span className="fw-bold">${totalCarrito()}</span></p>
-                                            <button className="btn btn-dark w-100 mt-3 p-2">Vaciar Carrito</button>
+                                            <button className="btn btn-dark w-100 mt-3 p-2" onClick={vaciarCarrito}>Vaciar Carrito</button>
                                         </Fragment>
                                     )}
                                 </div>
