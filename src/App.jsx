@@ -6,8 +6,16 @@ import Footer from "./components/Footer.jsx";
 import {db} from "./data/db.js";
 
 function App() {
+    const carritoInicial = () => {
+        const carritoLocalStorage = localStorage.getItem("carrito");
+        if (carritoLocalStorage){
+            return JSON.parse(carritoLocalStorage);
+        } else {
+            return [];
+        }
+    }
     const [data, setData] = useState([]);
-    const [carrito, setCarrito] = useState([]);
+    const [carrito, setCarrito] = useState(carritoInicial);
 
     function addToCarrito(item){
         const itemExiste = carrito.findIndex(guitarra => guitarra.id === item.id);
@@ -24,13 +32,24 @@ function App() {
         }
     }
 
+    function saveLocalStorage(){
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+    }
+
+    function clearLocalStorage(){
+        localStorage.clear();
+    }
+
     useEffect(() => {
         setData(db);
     }, []);
+    useEffect(() => {
+        saveLocalStorage();
+    }, [carrito]);
 
     return (
         <>
-            <Header carrito={carrito} setCarrito={setCarrito}/>
+            <Header carrito={carrito} setCarrito={setCarrito} clearLocalStorage={clearLocalStorage}/>
             <main className="container-xl mt-5">
                 <h2 className="text-center">Nuestra Colección</h2>
                 <div className="row mt-5">
