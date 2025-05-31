@@ -1,54 +1,16 @@
 import React, {Fragment} from "react";
 
-const Header = ({carrito, setCarrito, clearLocalStorage}) => {
-
-    function totalCarrito(){
-        const costoTotalCarrito = carrito.reduce((total, guitarra) => {
-            return total + (guitarra.price * guitarra.cantidad);
-        }, 0);
-        return costoTotalCarrito;
-    }
-
-    function aumentarCantidadProducto(id){
-        const carritoNuevo = carrito.map((item) => {
-            if (item.id === id  && item.cantidad < 10){
-                return {
-                    ...item,
-                    cantidad: item.cantidad + 1
-                }
-            }
-            return item;
-        })
-        setCarrito(carritoNuevo);
-    }
-
-    function disminuirCantidadProducto(id){
-        const carritoNuevo = carrito.map((item) => {
-            if (item.id === id){
-                const cantidad = item.cantidad -1;
-                if (cantidad <= 0){
-                    return null;
-                }
-                return {...item, cantidad: cantidad};
-            }
-            return item;
-        }).filter(Boolean);
-        setCarrito(carritoNuevo);
-    }
-
-    function eliminarElementoCarrito(id) {
-        const carritoActual = [...carrito];
-        const carritoNuevo = carritoActual.filter((guitarra) => {
-            return guitarra.id !== id;
-        });
-        setCarrito(carritoNuevo);
-    }
-
-    function vaciarCarrito() {
-        setCarrito([]);
-        clearLocalStorage();
-    }
-
+const Header = (
+    {
+        carrito,
+        setCarrito,
+        clearLocalStorage,
+        totalCarrito,
+        aumentarCantidadProducto,
+        disminuirCantidadProducto,
+        eliminarElementoCarrito,
+        vaciarCarrito
+    }) => {
     return (
         <Fragment>
             <header className="py-5 header">
@@ -84,7 +46,9 @@ const Header = ({carrito, setCarrito, clearLocalStorage}) => {
                                                 {carrito.map(guitarra => (
                                                     <tr key={guitarra.id}>
                                                         <td>
-                                                            <img className="img-fluid" src={`/img/${guitarra.image}.jpg`} alt="Imagen guitarra"/>
+                                                            <img className="img-fluid"
+                                                                 src={`/img/${guitarra.image}.jpg`}
+                                                                 alt="Imagen guitarra"/>
                                                         </td>
                                                         <td>{guitarra.name}</td>
                                                         <td className="fw-bold">${guitarra.price}</td>
@@ -124,8 +88,11 @@ const Header = ({carrito, setCarrito, clearLocalStorage}) => {
                                                 ))}
                                                 </tbody>
                                             </table>
-                                            <p className="text-end">Total pagar: <span className="fw-bold">${totalCarrito()}</span></p>
-                                            <button className="btn btn-dark w-100 mt-3 p-2" onClick={vaciarCarrito}>Vaciar Carrito</button>
+                                            <p className="text-end">Total pagar: <span
+                                                className="fw-bold">${totalCarrito()}</span></p>
+                                            <button className="btn btn-dark w-100 mt-3 p-2"
+                                                    onClick={vaciarCarrito}>Vaciar Carrito
+                                            </button>
                                         </Fragment>
                                     )}
                                 </div>

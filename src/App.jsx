@@ -1,55 +1,35 @@
-import {useState, useEffect} from "react";
-
 import Header from "./components/Header.jsx";
 import Guitarra from "./components/Guitarra.jsx";
 import Footer from "./components/Footer.jsx";
 import {db} from "./data/db.js";
+import useCarrito from "./hooks/useCarrito.js";
 
 function App() {
-    const carritoInicial = () => {
-        const carritoLocalStorage = localStorage.getItem("carrito");
-        if (carritoLocalStorage){
-            return JSON.parse(carritoLocalStorage);
-        } else {
-            return [];
-        }
-    }
-    const [data, setData] = useState([]);
-    const [carrito, setCarrito] = useState(carritoInicial);
-
-    function addToCarrito(item){
-        const itemExiste = carrito.findIndex(guitarra => guitarra.id === item.id);
-
-        //Si ya existe el elemento solo aumenta cantidad
-        if (itemExiste >= 0){
-            const updatedCarrito = [...carrito];
-            updatedCarrito[itemExiste].cantidad++;
-            setCarrito(updatedCarrito);
-        }else{
-            //Si no existia el elemento le agregamos una cantidad
-            item.cantidad = 1;
-            setCarrito([...carrito, item]);
-        }
-    }
-
-    function saveLocalStorage(){
-        localStorage.setItem("carrito", JSON.stringify(carrito));
-    }
-
-    function clearLocalStorage(){
-        localStorage.clear();
-    }
-
-    useEffect(() => {
-        setData(db);
-    }, []);
-    useEffect(() => {
-        saveLocalStorage();
-    }, [carrito]);
-
+    const {
+        data,
+        carrito,
+        setCarrito,
+        addToCarrito,
+        saveLocalStorage,
+        clearLocalStorage,
+        totalCarrito,
+        aumentarCantidadProducto,
+        disminuirCantidadProducto,
+        eliminarElementoCarrito,
+        vaciarCarrito
+    } = useCarrito();
     return (
         <>
-            <Header carrito={carrito} setCarrito={setCarrito} clearLocalStorage={clearLocalStorage}/>
+            <Header
+                carrito={carrito}
+                setCarrito={setCarrito}
+                clearLocalStorage={clearLocalStorage}
+                totalCarrito={totalCarrito}
+                aumentarCantidadProducto={aumentarCantidadProducto}
+                disminuirCantidadProducto={disminuirCantidadProducto}
+                eliminarElementoCarrito={eliminarElementoCarrito}
+                vaciarCarrito={vaciarCarrito}
+            />
             <main className="container-xl mt-5">
                 <h2 className="text-center">Nuestra Colección</h2>
                 <div className="row mt-5">
