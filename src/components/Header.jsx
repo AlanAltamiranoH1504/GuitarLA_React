@@ -9,6 +9,33 @@ const Header = ({carrito, setCarrito}) => {
         return costoTotalCarrito;
     }
 
+    function aumentarCantidadProducto(id){
+        const carritoNuevo = carrito.map((item) => {
+            if (item.id === id  && item.cantidad < 10){
+                return {
+                    ...item,
+                    cantidad: item.cantidad + 1
+                }
+            }
+            return item;
+        })
+        setCarrito(carritoNuevo);
+    }
+
+    function disminuirCantidadProducto(id){
+        const carritoNuevo = carrito.map((item) => {
+            if (item.id === id){
+                const cantidad = item.cantidad -1;
+                if (cantidad <= 0){
+                    return null;
+                }
+                return {...item, cantidad: cantidad};
+            }
+            return item;
+        }).filter(Boolean);
+        setCarrito(carritoNuevo);
+    }
+
     function eliminarElementoCarrito(id) {
         const carritoActual = [...carrito];
         const carritoNuevo = carritoActual.filter((guitarra) => {
@@ -64,6 +91,9 @@ const Header = ({carrito, setCarrito}) => {
                                                             <button
                                                                 type="button"
                                                                 className="btn btn-dark"
+                                                                onClick={() => {
+                                                                    disminuirCantidadProducto(guitarra.id);
+                                                                }}
                                                             >
                                                                 -
                                                             </button>
@@ -71,6 +101,9 @@ const Header = ({carrito, setCarrito}) => {
                                                             <button
                                                                 type="button"
                                                                 className="btn btn-dark"
+                                                                onClick={() => {
+                                                                    aumentarCantidadProducto(guitarra.id);
+                                                                }}
                                                             >
                                                                 +
                                                             </button>
